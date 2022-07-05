@@ -1,0 +1,15 @@
+
+services:
+  rmis:
+    image: 'gitlab.rm-tech.ru:4567/v.mishanin/sapsan_referencedataservice_land/rmis'
+    container_name: rmis
+    build:
+      context: .
+      dockerfile: '.\Rmis.WepApi\Dockerfile'
+    ports:
+      - 8080:80
+#    environment: 
+#      - ASPNETCORE_ENVIRONMENT=Development
+#      - RMIS_CLIENT_TRAIN_NUMBER_ENVIRONMENT=03
+#    entrypoint: ["dotnet", "Rmis.Client.WepApi.dll", "--trace"]
+  

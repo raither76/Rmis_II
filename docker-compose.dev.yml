@@ -1,0 +1,29 @@
+version: '2.4'
+
+networks:
+  default:
+    driver: bridge
+  traefik-ingress_default:
+    external: true
+
+services:
+  backend:
+    image: ${CI_REGISTRY_IMAGE}:${IMAGE_TAG}
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ConnectionStrings__RmisDbContext=User ID=${DEV_DB_USER};Password=${DEV_DB_PWD};Server=${DEV_DB_HOST};Port=5432;Database=${DEV_DB};Integrated Security=true;Pooling=true;"
+    restart: always
+    networks:
+      - default
+      - traefik-ingress_default
+    labels:
+      - "traefik.http.routers.mediasys-dev.rule=Host(`sapsan-rds-dev.rm-tech.ru`)"
+      - "traefik.http.routers.mediasys-dev.tls=true"
+      - "traefik.http.routers.mediasys-dev.tls.certresolver=leresolver"
+      - "traefik.http.services.mediasys-dev.loadbalancer.server.port=80"
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://loki:${LOKI_PWD}@loki.rm-tech.ru/loki/api/v1/push"
+        loki-retries: "3"
+        loki-batch-size: "500"

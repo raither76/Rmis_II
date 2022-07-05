@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using Rmis.Domain;
+using Rmis.Yandex.Schedule;
+
+namespace Rmis.Application.Abstract
+{
+    public interface IScheduleService
+    {
+        void SyncSchedulesFromYandex();
+
+        void SyncSchedulesFromGoogle();
+
+        IEnumerable<ScheduleVm> GetSchedulesByTrainNumber(string trainNumber);
+        IEnumerable<ScheduleVm> GetSchedulesByRouteNumber(int routeNumber, DateTimeOffset date);
+
+    }
+}
